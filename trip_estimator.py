@@ -16,7 +16,7 @@ def estimate_trip_cost(from_city, to_city, num_days):
     return cost_estimate
 
 def build_parser():
-    parser = argparse.ArgumentParser(description='Estimate trip cost with given cities and number of days.')
+    parser = argparse.ArgumentParser(description='Estimate trip cost with given cities and number of days')
     parser.add_argument('--from', '-f', dest='from_city', help='Trip from city')
     parser.add_argument('--to', '-t', dest='to_city', help='Trip to city')
     parser.add_argument('--days', '-d', dest='num_days', help='Number of days for staying')
@@ -25,7 +25,7 @@ def build_parser():
 if __name__ == '__main__':
     parser = build_parser()
 
-    if len(sys.argv) != 5:
+    if len(sys.argv) != 4:
         parser.print_help()
         exit()
 
@@ -39,4 +39,8 @@ if __name__ == '__main__':
         print('Invalid input!')
     else:
         print('Cost Estimate for travelling from {} to {} is: '.format(from_city, to_city))
-        print(estimate_trip_cost(from_city, to_city, num_days))
+        d = estimate_trip_cost(from_city, to_city, num_days)
+        total_price = sum([d[k] for k in d if isinstance(d[k], (int, float))])
+        print('Total price: ${:.2f}'.format(total_price))
+        print()
+        print(d)
