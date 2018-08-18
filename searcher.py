@@ -10,15 +10,8 @@ def search(query):
     response = requests.get(BING_SEARCH_URL, headers=headers, params=params)
     response.raise_for_status()
 
-    search_results = response.json()
-
-    rows = "\n".join(["""<tr>
-                           <td><a href=\"{0}\">{1}</a></td>
-                           <td>{2}</td>
-                         </tr>""".format(v["url"],v["name"],v["snippet"]) \
-                      for v in search_results["webPages"]["value"]])
-
-    return rows
+    search_results = str(response.json())
+    return search_results
 
 if __name__ == '__main__':
     print('Dont run this file directly')
