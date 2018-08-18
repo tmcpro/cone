@@ -113,5 +113,3 @@ def sumRewards(auth_code):
 				break
 	#print (rewardsTotal)
 	return rewardsTotal
-
-sumRewards("cc7624f4421a46cfaddac68f2d4d9431")
