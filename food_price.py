@@ -7,6 +7,11 @@ import searcher
 import utils
 
 def food_price(city):
+    default_price = 15.
+    
+    if city is None:
+        return default_price
+
     query = 'average meal cost in {}'.format(city)
 
     ans = searcher.search(query)
@@ -16,12 +21,11 @@ def food_price(city):
     prices = [float(''.join(list(filter(utils.isdigit_or_dot, m)))) for m in match]
 
     if not prices:
-        avg_price = 15.
+        avg_price = default_price
     else:
         avg_price = sum(prices) / len(prices)
 
     print('${}'.format(avg_price))
-
     return avg_price
 
 

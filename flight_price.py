@@ -7,6 +7,9 @@ import searcher
 import utils
 
 def flight_price(from_city, to_city):
+    if from_city is None or to_city is None:
+        return None
+
     query = 'price from {} to {}'.format(from_city, to_city)
     ans = searcher.search(query)
 
@@ -14,7 +17,7 @@ def flight_price(from_city, to_city):
 
     if not match:
         print('City pairs not supported yet, try another pair')
-        return -1
+        return None
     else:
         print('Price from {} to {}: '.format(from_city, to_city))
         price = float(''.join(list(filter(utils.isdigit_or_dot, match.group(0)))))
