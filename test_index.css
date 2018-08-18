@@ -64,19 +64,46 @@ li.nav-links a:hover {
 
 .form {
   text-align: center;
+  size: 100px;
 }
 
-#form-search {
-  width: 900px;
-  line-height: 64px;
+#form-from-city {
+  width: 600px;
+  line-height: 48px;
   padding: 20px 10px;
 }
 
-.form #form-search {
+.form #form-from-city {
   padding: 0 20px;
+  size: 100px;
+  font-size: 20px;
 }
 
-/*#form-search:hover {
+#form-to-city {
+  width: 600px;
+  line-height: 48px;
+  padding: 20px 10px;
+}
+
+.form #form-to-city {
+  padding: 0 20px;
+  size: 100px;
+  font-size: 20px;
+}
+
+#form-num-days {
+  width: 600px;
+  line-height: 48px;
+  padding: 20px 10px;
+}
+
+.form #form-num-days {
+  padding: 0 20px;
+  size: 100px;
+  font-size: 20px;
+}
+
+/*#form-from-city:hover {
   border-color: #e4e4e4;
   padding-top: 0;
 }*/
@@ -134,9 +161,16 @@ footer ul a:hover {
    display: none;
  }
 
- #form-search {
+ #form-from-city {
    width: 80%;
+ }
 
+ #form-to-city {
+   width: 80%;
+ }
+
+ #form-num-days {
+   width: 80%;
  }
 
  footer {
@@ -178,9 +212,17 @@ footer ul a:hover {
    display: none;
  }
 
- #form-search {
+ #form-from-city {
    width: 80%;
 
+ }
+
+ #form-to-city {
+   width: 80%;
+ }
+
+ #form-num-days {
+   width: 80%;
  }
 
  footer {
