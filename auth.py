@@ -33,4 +33,4 @@ def authorize(api):
 	response = requests.request("POST", url, data=payload, headers=headers)
 	data_hash = ast.literal_eval(response.text)
 
-	return (data_hash["access_token"])
+	return data_hash
