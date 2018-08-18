@@ -16,7 +16,7 @@ def food_price(city):
 
     ans = searcher.search(query)
 
-    print('Expected food price at {} for 1 day: '.format(city))
+    print('Expected food price at {}: '.format(city))
     match = re.findall('\$\d+(?:\.\d+)?', ans)
     prices = [float(''.join(list(filter(utils.isdigit_or_dot, m)))) for m in match]
 
