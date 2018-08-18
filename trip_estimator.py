@@ -43,5 +43,5 @@ if __name__ == '__main__':
         total_price = sum([d[k] for k in d if isinstance(d[k], (int, float))])
         print('Total price: ${:.2f}'.format(total_price))
         print()
-        print(d)
+        # print(d)
         sys.stdout.flush()

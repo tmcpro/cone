@@ -13,15 +13,18 @@ def flight_price(from_city, to_city):
     query = 'price from {} to {}'.format(from_city, to_city)
     ans = searcher.search(query)
 
-    match = re.search('\$\d+(?:\.\d+)?', ans)
+    # match = re.search('\$\d+(?:\.\d+)?', ans)
+    match = re.findall('\$\d+(?:\.\d+)?', ans)
 
     if not match:
         print('City pairs not supported yet, try another pair')
         return None
     else:
         print('Price from {} to {}: '.format(from_city, to_city))
-        price = float(''.join(list(filter(utils.isdigit_or_dot, match.group(0)))))
-        print('${}'.format(price))
+        # price = float(''.join(list(filter(utils.isdigit_or_dot, match.group(0)))))
+        prices = [float(''.join(list(filter(utils.isdigit_or_dot, m)))) for m in match]
+        price = sum(prices) / len(prices)
+        print('${:.2f}'.format(price))
         return price
 
 if __name__ == '__main__':

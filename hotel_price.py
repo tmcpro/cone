@@ -16,7 +16,7 @@ def hotel_price(city):
 
     ans = searcher.search(query)
 
-    print('Expected Hotel Cost at {} for 1 night: '.format(city))
+    print('Expected hotel cost at {} for 1 night: '.format(city))
     match = re.findall('\$\d+(?:\.\d+)?', ans)
     prices = [float(''.join(list(filter(utils.isdigit_or_dot, m)))) for m in match]
 
@@ -25,7 +25,7 @@ def hotel_price(city):
     else:
         avg_price = sum(prices) / len(prices)
 
-    print('${}'.format(avg_price))
+    print('${:.2f}'.format(avg_price))
     return avg_price
 
 
