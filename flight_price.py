@@ -1,12 +1,8 @@
 import re
 import sys
 import requests
-# from IPython.display import HTML
 
 from config import *
-
-BING_SEARCH_URL = 'https://api.cognitive.microsoft.com/bing/v7.0/search'
-BING_SEARCH_AZURE_KEY = '0b9dd4458eef476292232cbeccfaaee0'
 
 def flight_price(from_city, to_city):
     search_term = 'price from {} to {}'.format(from_city, to_city)
@@ -28,6 +24,8 @@ def flight_price(from_city, to_city):
     print('Price: ')
     match = re.search('\$[0-9,]+', rows)
     print(match.group(0))
+
+
 
 
 if __name__ == '__main__':
