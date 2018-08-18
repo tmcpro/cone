@@ -28,7 +28,7 @@ def authorize(api):
 		    'postman-token': "672d1046-d0b4-cd69-85c8-6a23636a63ff"
 		    }
 	else:
-		print "UNDEFINED API"
+		print ("UNDEFINED API")
 
 	response = requests.request("POST", url, data=payload, headers=headers)
 	data_hash = ast.literal_eval(response.text)
