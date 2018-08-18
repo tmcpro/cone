@@ -43,9 +43,36 @@
 
   <!-- BUTTONS -->
   <div class= "buttons">
-    <input type="submit" value="TripCone Search" id="tripcone_search">
-    <input type="submit" value="I'm Feeling Lucky" id="im_feeling_lucky">
+    <input type="submit" value="TripCone Search" id="tripcone_search"></button>
+    <input type="submit" value="I'm Feeling Lucky" id="im_feeling_lucky"></button>
   </div>
+
+  
+  <span id="place_for_suggestions"></div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  
+  <script>
+  $("#tripcone_search").click(function(){
+      var fc = $("#form-from-city").val();
+      var tc = $("#form-to-city").val();
+      var d = $("#form-num-days").val();
+  
+      $.ajax({
+        url: "/search",
+        type: "get",
+        data: {from: fc, to: tc, days: d},
+        success: function(response) {
+          alert(response);
+          window.location.replace(response);
+        },
+        error: function(xhr) {
+          //Do Something to handle error
+          alert(xhr);
+        }
+      });
+  });
+  </script>
 
   <!-- FOOTER -->
   <footer>

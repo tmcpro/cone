@@ -6,6 +6,9 @@
 
 import os
 import flask
+
+import flight_price
+
 app = flask.Flask(__name__)
 app.secret_key = os.urandom(16)
 
@@ -36,3 +39,14 @@ def index_css():
 @app.route('/TripCone.png')
 def trip_cone_png():
     return app.send_static_file('TripCone.png')
+
+@app.route('/search')
+def search():
+    from_city = flask.request.args.get('from', '')
+    to_city = flask.request.args.get('to', '')
+    price = flight_price.flight_price(from_city, to_city)
+    return '/rewards'
+    
+@app.route('/rewards')
+def rewards():
+    return app.send_static_file('rewards_money_input.html')
