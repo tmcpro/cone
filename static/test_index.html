@@ -51,22 +51,22 @@
 
   <script>
   $("#tripcone_search").click(function(){
-      var fc = $("#form-from-city").val();
-      var tc = $("#form-to-city").val();
-      var d = $("#form-num-days").val();
-  
-      $.ajax({
-        url: "/search",
-        type: "get",
-        data: {from: fc, to: tc, days: d},
-        success: function(response) {
-          window.location.replace(response);
-        },
-        error: function(xhr) {
-          //Do Something to handle error
-          alert(xhr);
-        }
-      });
+    var fc = $("#form-from-city").val();
+    var tc = $("#form-to-city").val();
+    var d = $("#form-num-days").val();
+
+    $.ajax({
+      url: "/search",
+      type: "get",
+      data: {from: fc, to: tc, days: d},
+      success: function(response) {
+        window.location.replace(response);
+      },
+      error: function(xhr) {
+        //Do Something to handle error
+        alert('Test: ' + xhr);
+      }
+    });
   });
   </script>
 
