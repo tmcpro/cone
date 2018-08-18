@@ -4,20 +4,26 @@ import requests
 
 from config import *
 import searcher
+import utils
 
 def food_price(city):
     query = 'average meal cost in {}'.format(city)
 
     ans = searcher.search(query)
 
-    print('Avg Food Price at {}: '.format(city))
-    match = re.findall('\$[0-9,]+', ans)
+    print('Expected Food Price at {}: '.format(city))
+    match = re.findall('\$\d+(?:\.\d+)?', ans)
+    prices = [float(''.join(list(filter(utils.isdigit_or_dot, m)))) for m in match]
 
-    prices = [int(re.search('\d+', m).group(0)) for m in match]
-    avg_price = sum(prices) / len(prices)
+    if not prices:
+        avg_price = 15.
+    else:
+        avg_price = sum(prices) / len(prices)
 
     print('${}'.format(avg_price))
+
     return avg_price
+
 
 if __name__ == '__main__':
 

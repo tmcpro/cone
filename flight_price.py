@@ -4,22 +4,22 @@ import requests
 
 from config import *
 import searcher
+import utils
 
 def flight_price(from_city, to_city):
     query = 'price from {} to {}'.format(from_city, to_city)
     ans = searcher.search(query)
 
-    match = re.search('\$[0-9,]+', ans)
+    match = re.search('\$\d+(?:\.\d+)?', ans)
 
     if not match:
         print('City pairs not supported yet, try another pair')
         return -1
     else:
         print('Price from {} to {}: '.format(from_city, to_city))
-        price = int(''.join(list(filter(str.isdigit, match.group(0)))))
+        price = float(''.join(list(filter(utils.isdigit_or_dot, match.group(0)))))
         print('${}'.format(price))
         return price
-
 
 if __name__ == '__main__':
 
