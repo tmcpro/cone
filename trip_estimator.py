@@ -44,3 +44,4 @@ if __name__ == '__main__':
         print('Total price: ${:.2f}'.format(total_price))
         print()
         print(d)
+        sys.stdout.flush()
