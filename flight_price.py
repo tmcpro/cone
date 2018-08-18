@@ -3,30 +3,26 @@ import sys
 import requests
 
 from config import *
+import searcher
+import utils
 
 def flight_price(from_city, to_city):
-    search_term = 'price from {} to {}'.format(from_city, to_city)
+    if from_city is None or to_city is None:
+        return None
 
-    headers = { "Ocp-Apim-Subscription-Key" : BING_SEARCH_AZURE_KEY }
-    params  = { "q": search_term, "textDecorations":True, "textFormat": "HTML" }
-    response = requests.get(BING_SEARCH_URL, headers=headers, params=params)
-    response.raise_for_status()
+    query = 'price from {} to {}'.format(from_city, to_city)
+    ans = searcher.search(query)
 
-    search_results = response.json()
+    match = re.search('\$\d+(?:\.\d+)?', ans)
 
-    rows = "\n".join(["""<tr>
-                           <td><a href=\"{0}\">{1}</a></td>
-                           <td>{2}</td>
-                         </tr>""".format(v["url"],v["name"],v["snippet"]) \
-                      for v in search_results["webPages"]["value"]])
-
-    # print(rows)
-    print('Price: ')
-    match = re.search('\$[0-9,]+', rows)
-    print(match.group(0))
-
-
-
+    if not match:
+        print('City pairs not supported yet, try another pair')
+        return None
+    else:
+        print('Price from {} to {}: '.format(from_city, to_city))
+        price = float(''.join(list(filter(utils.isdigit_or_dot, match.group(0)))))
+        print('${}'.format(price))
+        return price
 
 if __name__ == '__main__':
 
