@@ -11,19 +11,24 @@ def estimate_trip_cost(from_city, to_city, num_days):
     cost_estimate['to'] = to_city
     cost_estimate['flight_cost'] = flight_price(from_city, to_city)
     cost_estimate['hotel_cost'] = hotel_price(to_city) * max(num_days, 0)
-    cost_estimate['food_price'] = food_price(to_city) * max(num_days, 0) * 2
+    cost_estimate['food_cost'] = food_price(to_city) * max(num_days, 0) * 2
 
     return cost_estimate
 
 def build_parser():
-    parser = argparse.ArgumentParser(description='Estimate trip cost with given cities and number of days')
-    parser.add_argument('--from', dest='from_city', help='From City')
-    parser.add_argument('--to', dest='to_city', help='To City')
-    parser.add_argument('--days', dest='num_days', help='Number of days for staying')
+    parser = argparse.ArgumentParser(description='Estimate trip cost with given cities and number of days.')
+    parser.add_argument('--from', '-f', dest='from_city', help='Trip from city')
+    parser.add_argument('--to', '-t', dest='to_city', help='Trip to city')
+    parser.add_argument('--days', '-d', dest='num_days', help='Number of days for staying')
     return parser
 
 if __name__ == '__main__':
     parser = build_parser()
+
+    if len(sys.argv) != 5:
+        parser.print_help()
+        exit()
+
     args = parser.parse_args()
 
     from_city = args.from_city
