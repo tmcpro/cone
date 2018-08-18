@@ -9,8 +9,8 @@ import time
 def sumRewards(auth_code):
 	rewardsTotal = {}	
 	access_token_money = auth.authorize("money_movement")["access_token"]
-	client_id = "enterpriseapi-sb-tJOw55ype3LktRNB5zY7oIHq"
-	client_secret = "175384eb1888f2dded491e8d7242398f0c5901db"
+	client_id = "cc2f96ed55c54755ac591e5e790146d8"
+	client_secret = "6c605ddbc36990f77c12f650e7b448cd"
 	redirect_uri = "https://developer.capitalone.com/products/playground"
 
 	##Money Transfer Info ######
@@ -38,8 +38,8 @@ def sumRewards(auth_code):
 	    }
 
 	response = requests.request("POST", url, data=payload, headers=headers)
-	rewards_hash = ast.literal_eval(response.text)
-
+	rewards_hash = json.loads(response.text)
+	print (response)
 	access_token_rewards = rewards_hash["access_token"]
 	refresh_token_rewards = rewards_hash["refresh_token"]
 	#access_token_rewards = auth.authorize("rewards")["access_token"]

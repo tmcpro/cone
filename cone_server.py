@@ -7,7 +7,7 @@
 import os
 import flask
 
-import flight_price
+import convertion_merge_inputs
 
 app = flask.Flask(__name__)
 app.secret_key = os.urandom(16)
@@ -44,9 +44,25 @@ def trip_cone_png():
 def search():
     from_city = flask.request.args.get('from', '')
     to_city = flask.request.args.get('to', '')
-    price = flight_price.flight_price(from_city, to_city)
+    num_days = flask.request.args.get('days', '')
+    state = convertion_merge_inputs.parse_and_convert(
+        from_city, to_city, int(num_days), flask.session['user'])
+    flask.session['conv_state'] = state
     return '/rewards'
     
 @app.route('/rewards')
 def rewards():
-    return app.send_static_file('rewards_money_input.html')
+    return app.send_static_file('rewards_and_money_input_final.html')
+
+@app.route('/reward_and_money_each_year')
+def reward_and_money_each_year():
+    rewards = flask.request.args.get('rewards', '')
+    money = flask.request.args.get('money', '')
+    state = convertion_merge_inputs.interpret(
+        flask.session['conv_state'], money, rewards)
+    flask.session['end_state'] = state
+    return '/end'
+
+@app.route('/end')
+def end():
+    return flask.session['end_state']
