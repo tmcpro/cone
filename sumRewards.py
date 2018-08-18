@@ -2,7 +2,9 @@ import auth
 import requests
 import ast
 import webbrowser
-
+import json
+import urllib
+import time
 
 def sumRewards(auth_code):
 	rewardsTotal = {}	
@@ -10,7 +12,7 @@ def sumRewards(auth_code):
 	client_id = "enterpriseapi-sb-tJOw55ype3LktRNB5zY7oIHq"
 	client_secret = "175384eb1888f2dded491e8d7242398f0c5901db"
 	redirect_uri = "https://developer.capitalone.com/products/playground"
-	
+
 	##Money Transfer Info ######
 	url = "https://api-sandbox.capitalone.com/money-movement/accounts"
 
@@ -30,7 +32,6 @@ def sumRewards(auth_code):
 	
 	###Get Access Code TESTING
 	url = "https://api-sandbox.capitalone.com/oauth2/token"
-	print ("HHHHHHH")
 	payload = "code=" + auth_code + "&client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=authorization_code&redirect_uri=" + redirect_uri
 	headers = {
 		"content-type": "application/x-www-form-urlencoded",
@@ -38,17 +39,12 @@ def sumRewards(auth_code):
 
 	response = requests.request("POST", url, data=payload, headers=headers)
 	rewards_hash = ast.literal_eval(response.text)
-	print ("^^^^^^^^^^^^^")
-	print (rewards_hash)
-	print ("^^^^^^^^^^^^^")
+
 	access_token_rewards = rewards_hash["access_token"]
 	refresh_token_rewards = rewards_hash["refresh_token"]
-	print ("")
-	print (access_token_rewards)
 	#access_token_rewards = auth.authorize("rewards")["access_token"]
+	
 
-
-	#Call API
 	url = "https://api-sandbox.capitalone.com/rewards/accounts"
 
 	headers = {
@@ -57,56 +53,65 @@ def sumRewards(auth_code):
 	    'accept-language': "en-US",
 	    }
 
-	response = requests.request("GET", url, headers=headers)
-	rewards_hash = ast.literal_eval(response.text)	
+	response1 = requests.request("GET", url, headers=headers)
+	rewards_hash = json.loads(response1.text)
 
 	##Find rewards ID and the rewards currency
 	for account in rewards_hash["rewardsAccounts"]:
 		for infoType in account:
-			if "lastFour" in account[infoType].keys():
-				lastFour = account[infoType][lastFour]
+			if (type(account[infoType]) == dict) and ("lastFour" in account[infoType].keys()):
+				lastFour = account[infoType]["lastFour"]
+				#print (lastFour)
+				rewardsTotal[lastFour] = {}
 				rewardsTotal[lastFour]["rewardsAccountReferenceId"] = account["rewardsAccountReferenceId"]
-	
 	##Refresh token
 	url = "https://api-sandbox.capitalone.com/oauth2/token"
-	payload = "client_id=" + client_id + "client_secret=" + client_secret + "&grant_type=refresh_token&refresh_token="+refresh_token_rewards
+	payload = "client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=refresh_token&refresh_token="+refresh_token_rewards
 	headers = {
-		"content-type": "application/x-www-form-urlencoded",
+		"content-type": "application/x-www-form-urlencoded"
 	    }
 
 	response = requests.request("POST", url, data=payload, headers=headers)
-	rewards_hash = ast.literal_eval(response.text)
+	rewards_hash = json.loads(response.text)
+#	print ("######")
+#	print (rewardsTotal)
 	access_token_rewards = rewards_hash["access_token"]
 
-	url = "https://api-sandbox.capitalone.com/rewards/accounts?creditCardLastFour="
+	url = "https://api-sandbox.capitalone.com/rewards/accounts/"
 	#Find Reward balance
-	for card in rewardsTotal.clone():
- 		url = url + rewardsTotal[card]["rewardsAccountReferenceId"]
- 		##If I cannot use authorization code again, which one to use?
-		headers = {
+	for card in rewardsTotal:
+		refid = urllib.parse.quote_plus(rewardsTotal[card]["rewardsAccountReferenceId"])
+		url = "https://api-sandbox.capitalone.com/rewards/accounts/" + refid
+		headers={
 		    'authorization': "Bearer " + access_token_rewards,
-		    'accept': "application/json;v=0",
-		    }
-
+		    'accept': "application/json;v=1",
+		    'accept-language': "en-US"
+		}
 		response = requests.request("GET", url, headers=headers)
-		rewards_hash = ast.literal_eval(response.text)
+		rewards_hash = json.loads(response.text)
+#		print (card)
+#		print ("PER CARD *******")
+#		print (rewards_hash)
+
 		if rewards_hash["canRedeem"] == True:
 			for redemptionCategory in rewards_hash["redemptionOpportunities"]:
-				if redemptionCategory["category"] == "Travel"
+				if redemptionCategory["category"] == "Travel":
 					rewardsCurrency = rewards_hash["rewardsCurrency"]
-					rewardsTotal[lastFour][rewardsCurrency] = rewards_hash["rewardsBalance"]
-					rewardsTotal[lastFour]["Cash Equivalent"] = redemptionCategory["cashValue"])
+					rewardsTotal[card][rewardsCurrency] = rewards_hash["rewardsBalance"]
+					rewardsTotal[card]["Cash Equivalent"] = redemptionCategory["cashValue"]
 		else:
-			rewardsTotal[lastFour]["Cash Equivalent"] = 0
+			rewardsTotal[card]["Cash Equivalent"] = 0
 
 	#Current available balance
 	for account in account_hash["accounts"]:
 		rewardsTotal[account["lastFourAccountNumber"]] = {}
+		#print ("ACCOUNT")
+		#print (account)
 		for infoType in account:
 			if infoType == "availableBalance":
 				rewardsTotal[account["lastFourAccountNumber"]]["Balance"] = account["availableBalance"]
 				break
-	print (rewardsTotal)
+	#print (rewardsTotal)
 	return rewardsTotal
 
-sumRewards("ff75b74645674f26b30e8e3603169668")
+sumRewards("cc7624f4421a46cfaddac68f2d4d9431")
