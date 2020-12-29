@@ -9,8 +9,8 @@ import time
 def sumRewards(auth_code):
 	rewardsTotal = {}	
 	access_token_money = auth.authorize("money_movement")["access_token"]
-	client_id = "cc2f96ed55c54755ac591e5e790146d8"
-	client_secret = "6c605ddbc36990f77c12f650e7b448cd"
+	client_id = ""
+	client_secret = ""
 	redirect_uri = "https://developer.capitalone.com/products/playground"
 
 	##Money Transfer Info ######
@@ -20,14 +20,14 @@ def sumRewards(auth_code):
 	    'authorization': "Bearer " + access_token_money,
 	    'accept': "application/json;v=0",
 	    'cache-control': "no-cache",
-	    'postman-token': "65c0519f-28f0-ed9f-30eb-8b4adf7ac7fa"
+	    'postman-token': ""
 	    }
 
 	response = requests.request("GET", url, headers=headers)
 	account_hash = ast.literal_eval(response.text)
 
 	### Rewards Info ####
-	#access_token_rewards = "84b2d1f04c524be32630921e989e1954c"
+	#access_token_rewards = ""
 	##Money Transfer Info ######
 	
 	###Get Access Code TESTING
